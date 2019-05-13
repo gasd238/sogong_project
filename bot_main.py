@@ -20,6 +20,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    if message.author.bot:
+        return None
     #명령어 출력관련
     if message.content == 'sj help':
         await client.send_message(message.channel, embed = help())
@@ -69,7 +71,7 @@ async def on_message(message):
         await client.send_message(message.channel, '심심이 작동 시작!')
         stat_chk[0] = 1
     
-    if stat_chk[0] == 1 and message.channel.id == '577332815415476244' and message.content != '' and message.content != 'sj 심심이' and message.content != 'sj 종료' and message.contetn != 'sj 추가':
+    if stat_chk[0] == 1 and message.channel.id == '577332815415476244' and message.content != '' and message.content != 'sj 심심이' and message.content != 'sj 종료' and message.content != 'sj 추가':
         embed, stat = find_res(message.content)
         if stat == -1:
             stat_chk[0] = 0
