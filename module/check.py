@@ -13,7 +13,7 @@ def check_opt(msg):
                     save_stat = 1
                 elif i == '-del':
                     save_stat = 2
-                else:
+                elif i == 'mod':
                     save_stat = 3
                 break
             else:
