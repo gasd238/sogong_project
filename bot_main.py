@@ -104,7 +104,7 @@ async def on_message(message):
         stat_chk[0] = 0
         await client.send_message(message.channel, '심심이 종료!')
 
-    if message.content == 'sj 추가' and message.channel.id == '577332815415476244' and stat_chk[0] == 0:
+    if message.content == 'sj 추가' and message.channel.id == '577332815415476244' and stat_chk[0] == 0 and stat_chk[0] != 1:
         await client.send_message(message.channel, '[들은말] [답변할말]을 띄어쓰기를 기준으로 적어주세요\n 예시) 안녕하세요 ㅎㅇ')
         response = await client.wait_for_message(timeout=float(15), author=message.author, channel=message.channel)
         if response == None:
@@ -115,7 +115,7 @@ async def on_message(message):
             add_res(res)
             await client.send_message(response.channel, '추가 완료!')
 
-    if message.content == 'sj 삭제':
+    if message.content == 'sj 삭제' and stat_chk[0] != 1:
         await client.send_message(message.channel, '[들은말] [답변할말]을 띄어쓰기를 기준으로 적어주세요\n 예시) 안녕하세요 ㅎㅇ')
         response = await client.wait_for_message(timeout=float(15), author=message.author, channel=message.channel)
         if response == None:
