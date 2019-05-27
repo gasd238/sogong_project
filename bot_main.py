@@ -26,7 +26,7 @@ async def on_message(message):
     if message.content == 'sj help':
         await client.send_message(message.channel, embed = help())
 
-    #개인정보 저장 관련
+    #개인정보 저장 관련 
     if message.content.startswith('sj save'):
         msg = message.content.split(' ')
         embed, save_stat = check_opt(msg)
