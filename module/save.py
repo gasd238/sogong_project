@@ -39,11 +39,10 @@ def CreateFileToBeSavedPrivacy():
 def ReadUserPrivacySelect(siteName):
     siteName = str(siteName)
     if os.path.isfile(fileDir):
-        with open(fileDir) as jsonFile:
+        with open(fileDir, 'r', encoding='utf-8') as jsonFile:
             jsonData = json.load(jsonFile)
             if siteName in jsonData:
-                jsonString = jsonData[siteName]
-                return jsonString
+                return jsonData[siteName]
             else:
                 return False
     else:
@@ -52,7 +51,7 @@ def ReadUserPrivacySelect(siteName):
 #모든 사이트의 아이디 비밀번호를 파일에서 불러오고 객체 리턴
 def ReadUserPrivacySelectAll():
     if os.path.isfile(fileDir):
-        with open(fileDir) as jsonFile:
+        with open(fileDir, 'r', encoding='utf-8') as jsonFile:
             jsonData = json.load(jsonFile)
         return jsonData
     else:
@@ -66,7 +65,7 @@ def ReadUserPrivacySelectAll():
 #아이디 비밀번호를 파일에 추가, 수정
 def AddUserPrivacy(siteName, ID, PW, etc):
     if etc == None:
-        etc == "없음"
+        etc = "없음"
     siteName = str(siteName)
     ID = str(ID)
     PW = str(PW)
@@ -74,12 +73,14 @@ def AddUserPrivacy(siteName, ID, PW, etc):
     if os.path.isfile(fileDir):
         userPrivacy = ReadUserPrivacySelectAll()
         userPrivacy[siteName] = {"id":ID, "PW":PW, "etc":etc}
-        jstring = json.dumps(userPrivacy, indent='\t')
-        f = open(fileDir, "w", encoding='utf-8')
-        f.write(jstring)
-        f.close()
+        try:
+            with open(fileDir, 'w', encoding='utf-8') as userinfo:
+                json.dump(userPrivacy, userinfo, ensure_ascii=False, indent="\t")
+        except:
+            return "저장 실패"
+        return "저장 성공"
     else:
-        return False
+        return "저장 실패"
 
 # AddUserPrivacy("GG", "D", "B", "3")
 # userPrivacy=ReadUserPrivacySelectAll()
@@ -94,14 +95,16 @@ def DeleteUserPrivacy(siteName):
         userPrivacy = ReadUserPrivacySelectAll()
         if siteName in userPrivacy:
             del userPrivacy[siteName]
-            jstring = json.dumps(userPrivacy, indent='\t')
-            f = open(fileDir, "w", encoding='utf-8')
-            f.write(jstring)
-            f.close()
+            try:
+                with open(fileDir, 'w', encoding='utf-8') as userinfo:
+                    json.dump(userPrivacy, userinfo, ensure_ascii=False, indent="\t")
+            except:
+                return "삭제 실패"
+            return "삭제 실패"
         else:
-            return False
+            return "삭제할 사이트가 발견되지 않음"
     else:
-        return False
+        return "삭제 실패"
 
 #-------------------------------------------------------------------------------------------
 

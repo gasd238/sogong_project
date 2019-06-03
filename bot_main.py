@@ -53,10 +53,10 @@ async def on_message(message):
                     await client.send_message(response.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
 
                 elif len(content) == 3:
-                    AddUserPrivacy(content[0], content[1], content[2], None)
+                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], None))
 
                 else:
-                    ddUserPrivacy(content[0], content[1], content[2], content[3])
+                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], content[3]))
         
         elif save_stat == 2:
             embed = discord.Embed(title='삭제하기', description='삭제할 정보의 사이트를 입력해 주세요')
@@ -66,10 +66,12 @@ async def on_message(message):
             if response == None:
                 await client.send_message(message.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
                 return
+                
             else:
+                await client.send_message(message.channel, DeleteUserPrivacy(siteName))
                 await client.delete_message(response)
                 await client.delete_message(mudel)
-                DeleteUserPrivacy(response.content)
+                
 
         elif save_stat == 3:
             embed = discord.Embed(title='수정하기', description='수정할 id, 비밀번호와 그것의 사이트를 입력해 주세요')
@@ -89,10 +91,10 @@ async def on_message(message):
                     await client.send_message(response.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
 
                 elif len(content) == 3:
-                    AddUserPrivacy(content[0], content[1], content[2], None)
+                   await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], None))
 
                 else:
-                    ddUserPrivacy(content[0], content[1], content[2], content[3])
+                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], content[3]))
     
     
     
