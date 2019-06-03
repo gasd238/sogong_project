@@ -100,7 +100,7 @@ def DeleteUserPrivacy(siteName):
                     json.dump(userPrivacy, userinfo, ensure_ascii=False, indent="\t")
             except:
                 return "삭제 실패"
-            return "삭제 실패"
+            return "삭제 성공"
         else:
             return "삭제할 사이트가 발견되지 않음"
     else:
