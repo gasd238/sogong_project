@@ -28,6 +28,7 @@ async def on_message(message):
 
     #개인정보 저장 관련 
     if message.content.startswith('sj save'):
+        CreateFileToBeSavedPrivacy()
         msg = message.content.split(' ')
         embed, save_stat = check_opt(msg)
 
@@ -48,20 +49,50 @@ async def on_message(message):
                 await client.delete_message(mudel)
                 content = response.content.split(' ')
                 hangul = re.compile('[ㄱ-ㅣ가-힣]+')
-                if len(content) != 3 or hangul.findall(content[1]) != [] or hangul.findall(content[2]) != []:
+                if len(content) < 3 or len(content) > 4 or hangul.findall(content[1]) != [] or hangul.findall(content[2]) != []:
                     await client.send_message(response.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
 
+                elif len(content) == 3:
+                    AddUserPrivacy(content[0], content[1], content[2], None)
+
                 else:
-                    info_add(content, response.author.id)
+                    ddUserPrivacy(content[0], content[1], content[2], content[3])
         
         elif save_stat == 2:
             embed = discord.Embed(title='삭제하기', description='삭제할 정보의 사이트를 입력해 주세요')
             mudel = await client.send_message(message.channel, embed = embed)
+            response = await client.wait_for_message(author=message.author, channel=message.channel)
+
+            if response == None:
+                await client.send_message(message.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+                return
+            else:
+                await client.delete_message(response)
+                await client.delete_message(mudel)
+                DeleteUserPrivacy(response.content)
 
         elif save_stat == 3:
             embed = discord.Embed(title='수정하기', description='수정할 id, 비밀번호와 그것의 사이트를 입력해 주세요')
             embed.add_field(name = '예시', value = '옥션 abcd1234 1234567')
             mudel = await client.send_message(message.channel, embed = embed)
+            response = await client.wait_for_message(author=message.author, channel=message.channel)
+
+            if response == None:
+                await client.send_message(message.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+                return
+            else:
+                await client.delete_message(response)
+                await client.delete_message(mudel)
+                content = response.content.split(' ')
+                hangul = re.compile('[ㄱ-ㅣ가-힣]+')
+                if len(content) != 3 or hangul.findall(content[1]) != [] or hangul.findall(content[2]) != []:
+                    await client.send_message(response.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+
+                elif len(content) == 3:
+                    AddUserPrivacy(content[0], content[1], content[2], None)
+
+                else:
+                    ddUserPrivacy(content[0], content[1], content[2], content[3])
     
     
     
