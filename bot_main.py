@@ -26,6 +26,7 @@ async def on_message(message):
     if message.content == 'sj help':
         await client.send_message(message.channel, embed = help())
 
+    #개인정보 저장 관련 
     if message.content.startswith('sj save'):
         msg = message.content.split(' ')
         embed, save_stat = check_opt(msg)
@@ -37,7 +38,7 @@ async def on_message(message):
             embed = discord.Embed(title='추가하기', description='저장할 id, 비밀번호와 그것의 사이트를 입력해 주세요')
             embed.add_field(name = '예시', value = '옥션 abcd1234 1234567')
             mudel = await client.send_message(message.channel, embed = embed)
-            response = await client.wait_for_message(timeout=float(15), author=message.author, channel=message.channel)
+            response = await client.wait_for_message(author=message.author, channel=message.channel)
 
             if response == None:
                 await client.send_message(message.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
