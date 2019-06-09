@@ -5,9 +5,9 @@ import os
 from collections import OrderedDict
 user = getpass.getuser()
 fileDir = "C:/Users/" + user + "/AppData/Local/DiscordChatbot/UserPrivacy.json"
+folderDir = "C:/Users/" + user + "/AppData/Local/DiscordChatbot"
 #폴더 만들기
 def CreateDiscordChatbotFolder():
-    folderDir = "C:/Users/" + user + "/AppData/Local/DiscordChatbot"
     if not os.path.isdir(folderDir):
         os.mkdir(folderDir)
     else:
