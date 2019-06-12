@@ -135,6 +135,8 @@ def Decryption(key, encrypted_text):
     return decrypted_text.decode()
 
 #-------------------------------------------------------------------------------------------\
+
+#아이디 비밀번호 보내주는 코드
 def return_userInfoSelect(uid, siteName):
     userinfo = ReadUserPrivacySelect(uid, siteName)
     return_userinfo = "ID : " + Decryption(uid[0:8], b64decode(userinfo['id'])) + '\n' + "PW : " + Decryption(uid[0:8], b64decode(userinfo['PW'])) + '\n' + "etc : " + Decryption(uid[0:8], b64decode(userinfo['etc']))
