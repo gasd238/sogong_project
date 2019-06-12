@@ -116,13 +116,46 @@ def DeleteUserPrivacy(siteName):
 
 #-------------------------------------------------------------------------------------------
 
-#암호화 하여 리턴
+#문자열을 8바이트 배수 단위로 만드는 함수
+def pad(text):
+    while len(text) % 8 != 0:
+        text += ' '
+    return text
 
+#암호화 함수 - key는 무조건 8바이트(숫자혹은 문자8개)
+#           - text는 한글 안됨
+def Encryption(key, text):
+        from Crypto.Cipher import DES
 
-#-------------------------------------------------------------------------------------------
+        key = key.encode()
+        des = DES.new(key, DES.MODE_ECB)
 
-#복호화 하여 리턴
+        padded_text = pad(text)
+        encrypted_text = des.encrypt(padded_text.encode())
 
-#-------------------------------------------------------------------------------------------
+        return encrypted_text
 
+#복호화 함수
+def Decryption(key, encrypted_text):
+        from Crypto.Cipher import DES
 
+        key = key.encode()
+        des = DES.new(key, DES.MODE_ECB)
+
+        decrypted_text = des.decrypt(encrypted_text).decode()
+
+        return decrypted_text
+
+key = 'abcdefg1'
+text = 'yoyowang0614**@gmail.com'
+
+print("원본: " + text)
+
+encrypted_text = Encryption(key, text)
+
+print("DES 암호화된 자료:")
+print(encrypted_text)
+
+decrypted_text = Decryption(key, encrypted_text)
+
+print("복호: " + decrypted_text)
