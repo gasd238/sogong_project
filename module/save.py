@@ -139,39 +139,3 @@ def return_userInfoSelect(uid, siteName):
     userinfo = ReadUserPrivacySelect(uid, siteName)
     return_userinfo = "ID : " + Decryption(uid[0:8], b64decode(userinfo['id'])) + '\n' + "PW : " + Decryption(uid[0:8], b64decode(userinfo['PW'])) + '\n' + "etc : " + Decryption(uid[0:8], b64decode(userinfo['etc']))
     return return_userinfo
-=======
-        from Crypto.Cipher import DES
-
-        key = key.encode()
-        des = DES.new(key, DES.MODE_ECB)
-
-        padded_text = pad(text)
-        encrypted_text = des.encrypt(padded_text.encode())
-
-        return encrypted_text
-
-#복호화 함수
-def Decryption(key, encrypted_text):
-        from Crypto.Cipher import DES
-
-        key = key.encode()
-        des = DES.new(key, DES.MODE_ECB)
-
-        decrypted_text = des.decrypt(encrypted_text).decode()
-
-        return decrypted_text
-
-key = 'abcdefg1'
-text = 'yoyowang0614**@gmail.com'
-
-print("원본: " + text)
-
-encrypted_text = Encryption(key, text)
-
-print("DES 암호화된 자료:")
-print(encrypted_text)
-
-decrypted_text = Decryption(key, encrypted_text)
-
-print("복호: " + decrypted_text)
->>>>>>> 09a4f8f8f4a990c2ee8302861ddf60e67e311753
