@@ -71,6 +71,7 @@ def AddUserPrivacy(siteName, ID, PW, etc, uid):
     etc = str(etc)
     if os.path.isfile(fileDir):
         userPrivacy = ReadUserPrivacySelectAll()
+        userPrivacy[uid] = {}
         userPrivacy[uid][siteName]={"id":Encryption(uid[0:8], ID), "PW":Encryption(uid[0:8], PW), "etc":Encryption(uid[0:8], etc)}
         try:
             with open(fileDir, 'w', encoding='utf-8') as userinfo:
