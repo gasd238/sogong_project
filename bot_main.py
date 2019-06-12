@@ -53,10 +53,10 @@ async def on_message(message):
                     await client.send_message(response.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
 
                 elif len(content) == 3:
-                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], None))
+                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], None, message.author.id))
 
                 else:
-                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], content[3]))
+                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], content[3], message.author.id))
         
         elif save_stat == 2:
             embed = discord.Embed(title='삭제하기', description='삭제할 정보의 사이트를 입력해 주세요')
@@ -68,10 +68,9 @@ async def on_message(message):
                 return
                 
             else:
-                await client.send_message(message.channel, DeleteUserPrivacy(siteName))
+                await client.send_message(message.channel, DeleteUserPrivacy(response.content, message.author.id))
                 await client.delete_message(response)
-                await client.delete_message(mudel)
-                
+                await client.delete_message(mudel)                
 
         elif save_stat == 3:
             embed = discord.Embed(title='수정하기', description='수정할 id, 비밀번호와 그것의 사이트를 입력해 주세요')
@@ -91,13 +90,26 @@ async def on_message(message):
                     await client.send_message(response.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
 
                 elif len(content) == 3:
-                   await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], None))
+                   await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], None, message.author.id))
 
                 else:
-                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], content[3]))
-    
-    
-    
+                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], content[3], message.author.id))
+             
+        elif save_stat == 4:
+            embed = discord.Embed(title='정보 불러오기', description='불러올 정보의 사이트를 입력해 주세요')
+            mudel = await client.send_message(message.channel, embed = embed)
+            response = await client.wait_for_message(author=message.author, channel=message.channel)
+
+            if response == None:
+                await client.send_message(message.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+                return
+                
+            else:
+                embed = discord.Embed(title='불러온 정보', description= response.content + '의 아이디 비밀 번호 에요!')
+                embed.add_field(name = response.content, value = return_userInfoSelect(message.author.id, response.content))
+                await client.send_message(message.channel, embed = embed)
+                await client.delete_message(response)
+                await client.delete_message(mudel)
     
     
     #심심이 관련 구문
