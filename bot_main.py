@@ -9,6 +9,7 @@ from module.simsim import *
 client = discord.Client()
 #심심이 플레이 상태 확인용 
 stat_chk = [0]
+use_save = 0
 
 @client.event
 async def on_ready():
@@ -20,6 +21,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    global use_save
     if message.author.bot:
         return None
     #명령어 출력관련
@@ -27,14 +29,14 @@ async def on_message(message):
         await client.send_message(message.channel, embed = help())
 
     #개인정보 저장 관련 
-    if message.content.startswith('sj save'):
+    if message.content.startswith('sj save') and use_save == 0:
         CreateFileToBeSavedPrivacy()
         msg = message.content.split(' ')
         embed, save_stat = check_opt(msg)
-
+        use_save = 1
         if save_stat == 0 or save_stat == -1:
             await client.send_message(message.channel, embed = embed)
-
+            use_save = 0
         elif save_stat == 1:
             embed = discord.Embed(title='추가하기', description='저장할 id, 비밀번호와 그것의 사이트를 입력해 주세요')
             embed.add_field(name = '예시', value = '옥션 abcd1234 1234567')
@@ -43,6 +45,7 @@ async def on_message(message):
 
             if response == None:
                 await client.send_message(message.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+                use_save = 0
                 return
             else:
                 await client.delete_message(response)
@@ -51,12 +54,15 @@ async def on_message(message):
                 hangul = re.compile('[ㄱ-ㅣ가-힣]+')
                 if len(content) < 3 or len(content) > 4 or hangul.findall(content[1]) != [] or hangul.findall(content[2]) != []:
                     await client.send_message(response.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+                    use_save = 0
 
                 elif len(content) == 3:
                     await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], None, message.author.id))
+                    use_save = 0
 
                 else:
                     await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], content[3], message.author.id))
+                    use_save = 0
         
         elif save_stat == 2:
             embed = discord.Embed(title='삭제하기', description='삭제할 정보의 사이트를 입력해 주세요')
@@ -65,12 +71,14 @@ async def on_message(message):
 
             if response == None:
                 await client.send_message(message.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+                use_save = 0
                 return
                 
             else:
                 await client.send_message(message.channel, DeleteUserPrivacy(response.content, message.author.id))
                 await client.delete_message(response)
-                await client.delete_message(mudel)                
+                await client.delete_message(mudel)           
+                use_save = 0     
 
         elif save_stat == 3:
             embed = discord.Embed(title='수정하기', description='수정할 id, 비밀번호와 그것의 사이트를 입력해 주세요')
@@ -80,6 +88,7 @@ async def on_message(message):
 
             if response == None:
                 await client.send_message(message.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+                use_save = 0
                 return
             else:
                 await client.delete_message(response)
@@ -88,12 +97,15 @@ async def on_message(message):
                 hangul = re.compile('[ㄱ-ㅣ가-힣]+')
                 if len(content) != 3 or hangul.findall(content[1]) != [] or hangul.findall(content[2]) != []:
                     await client.send_message(response.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+                    use_save = 0
 
                 elif len(content) == 3:
                    await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], None, message.author.id))
+                   use_save = 0
 
                 else:
                     await client.send_message(message.channel, AddUserPrivacy(content[0], content[1], content[2], content[3], message.author.id))
+                    use_save = 0
              
         elif save_stat == 4:
             embed = discord.Embed(title='정보 불러오기', description='불러올 정보의 사이트를 입력해 주세요')
@@ -102,6 +114,7 @@ async def on_message(message):
 
             if response == None:
                 await client.send_message(message.channel, '제대로 입력하지 않았습니다. 다시 시도해 주세요')
+                use_save = 0
                 return
                 
             else:
@@ -110,6 +123,7 @@ async def on_message(message):
                 await client.send_message(message.channel, embed = embed)
                 await client.delete_message(response)
                 await client.delete_message(mudel)
+                use_save = 0
     
     
     #심심이 관련 구문

@@ -19,8 +19,6 @@ def CreateDiscordChatbotFolder():
 def CreateUserPrivacyfile():
     from collections import OrderedDict
     file_data = OrderedDict()
-
-    #file_data["GMARKET"]={"ID": "yoyowang0614", "PW":"gksruf0979", "data":"gksruf0979"}
     
     if not os.path.isfile(fileDir):
         with open(fileDir, 'w', encoding='utf-8') as make_file:
@@ -42,9 +40,12 @@ def ReadUserPrivacySelect(uid, siteName):
     if os.path.isfile(fileDir):
         with open(fileDir, 'r', encoding='utf-8') as jsonFile:
             jsonData = json.load(jsonFile)
-            if siteName in jsonData[uid]:
-                return jsonData[uid][siteName]
-            else:
+            try:
+                if siteName in jsonData[uid]:
+                    return jsonData[uid][siteName]
+                else:
+                    return False
+            except:
                 return False
     else:
         return False
@@ -57,9 +58,6 @@ def ReadUserPrivacySelectAll():
         return jsonData
     else:
         return False
-
-# userPrivacy=ReadUserPrivacySelect('GMARKET')
-# print(userPrivacy)
 
 #-------------------------------------------------------------------------------------------
 
@@ -83,9 +81,6 @@ def AddUserPrivacy(siteName, ID, PW, etc, uid):
     else:
         return "저장 실패"
 
-# AddUserPrivacy("GG", "D", "B", "3")
-# userPrivacy=ReadUserPrivacySelectAll()
-# print(userPrivacy["GG"])
 
 #-------------------------------------------------------------------------------------------
 
@@ -118,7 +113,6 @@ def pad(text):
 #암호화 함수 - key는 무조건 8바이트(숫자혹은 문자8개)
 #           - text는 한글 안됨
 def Encryption(key, text):
-<<<<<<< HEAD
     key = key.encode()
     des = DES.new(key, DES.MODE_ECB)
 
@@ -139,5 +133,8 @@ def Decryption(key, encrypted_text):
 #아이디 비밀번호 보내주는 코드
 def return_userInfoSelect(uid, siteName):
     userinfo = ReadUserPrivacySelect(uid, siteName)
-    return_userinfo = "ID : " + Decryption(uid[0:8], b64decode(userinfo['id'])) + '\n' + "PW : " + Decryption(uid[0:8], b64decode(userinfo['PW'])) + '\n' + "etc : " + Decryption(uid[0:8], b64decode(userinfo['etc']))
-    return return_userinfo
+    if userinfo == False:
+        return "저장된 아이디 비밀번호가 없음"
+    else:
+        return_userinfo = "ID : " + Decryption(uid[0:8], b64decode(userinfo['id'])) + '\n' + "PW : " + Decryption(uid[0:8], b64decode(userinfo['PW'])) + '\n' + "etc : " + Decryption(uid[0:8], b64decode(userinfo['etc']))
+        return return_userinfo
