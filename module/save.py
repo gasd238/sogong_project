@@ -90,7 +90,7 @@ def DeleteUserPrivacy(siteName, uid):
     siteName = str(siteName)
     if os.path.isfile(fileDir):
         userPrivacy = ReadUserPrivacySelectAll()
-        if siteName in userPrivacy:
+        if siteName in userPrivacy[uid]:
             del userPrivacy[uid][siteName]
             try:
                 with open(fileDir, 'w', encoding='utf-8') as userinfo:
