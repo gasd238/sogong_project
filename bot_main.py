@@ -150,7 +150,7 @@ async def on_message(message):
         stat_chk = 1
 
     #정해진 심심이 방이 아닐 시
-    elif message.content == 'sj 심심이' and message.channel.id != '577332815415476244':
+    elif message.content == 'sj 심심이' or message.content == 'sj 추가' and message.channel.id != '577332815415476244':
         await client.send_message(message.channel, '해당 채널에서는 심심이를 사용할 수 없습니다. 정해진 심심이 채널에서 사용해 주세요!')
 
     #stat_chk가 1이고 정해진 방에서만 작동시키는 명령어들 
@@ -213,7 +213,7 @@ async def on_message(message):
 
     # 들은말에 답변 중 필요 없는것 삭제
     if message.content == 'sj 삭제' and stat_chk != 1:
-        await client.send_message(message.channel, '[들은말] [답변할말]을 띄어쓰기를 기준으로 적어주세요\n 예시) 안녕하세요 ㅎㅇ')
+        await client.send_message(message.channel, '[들은말] [삭제한말]을 띄어쓰기를 기준으로 적어주세요\n 예시) 안녕하세요 ㅎㅇ')
         response = await client.wait_for_message(timeout=float(15), author=message.author, channel=message.channel)
         if response == None:
             await client.send_message(message.channel, '시간이 초과되었습니다. 다시 시도해 주세요')
@@ -227,4 +227,4 @@ async def on_message(message):
                 await client.send_message(message.channel, '삭제 실패(해당 답변 혹은 들은말이 존재하지 않음)')
 
 
-client.run('token')
+client.run('NTY5NzY4NjgzMjMzMzQ1NTM3.XNjZJg.e8xjRhj1CmewVXTYCk9tPMGuW9U')
