@@ -227,4 +227,4 @@ async def on_message(message):
                 await client.send_message(message.channel, '삭제 실패(해당 답변 혹은 들은말이 존재하지 않음)')
 
 
-client.run('NTY5NzY4NjgzMjMzMzQ1NTM3.XNjZJg.e8xjRhj1CmewVXTYCk9tPMGuW9U')
+client.run('token')
